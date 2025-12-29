@@ -37,8 +37,8 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity createTransaction(@AuthenticationPrincipal User fromUser, @RequestBody CreateTransactionDTO body) {
-        User toUser = userRepository.findById(UUID.fromString(body.toUserId())).orElseThrow(UserNotFoundException::new);
-        Transaction newTransaction = this.transactionService.makeTransaction(toUser, fromUser, body.type(), body.amount());
+        User toUser = body.type() == TransactionType.DEPOSIT  ? fromUser : userRepository.findById(UUID.fromString(body.toUserId())).orElseThrow(UserNotFoundException::new);
+        Transaction newTransaction = this.transactionService.makeTransaction(fromUser, toUser, body.type(), body.amount(), body.password(), body.boxId());
 
         return ResponseEntity.ok().body(new CreateResponseDTO("Created!", newTransaction));
     }

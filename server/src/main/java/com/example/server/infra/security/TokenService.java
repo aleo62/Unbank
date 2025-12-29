@@ -21,14 +21,13 @@ public class TokenService {
     public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create()
+
+            return JWT.create()
                     .withIssuer("unbank-api")
                     .withSubject(user.getEmail())
                     .withClaim("version", user.getTokenVersion())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
-
-            return token;
         } catch (JWTCreationException e) {
             throw new RuntimeException(e);
         }

@@ -4,4 +4,4 @@ import com.example.server.transactions.TransactionType;
 
 import java.math.BigDecimal;
 
-public record CreateTransactionDTO(String toUserId, BigDecimal amount, TransactionType type) {}
+public record CreateTransactionDTO(String toUserId, BigDecimal amount, TransactionType type, String password, String boxId) {}
