@@ -6,6 +6,7 @@ import com.example.server.auth.dto.ResponseDTO;
 import com.example.server.infra.security.TokenService;
 import com.example.server.user.User;
 import com.example.server.user.UserRepository;
+import com.example.server.user.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequestDTO body) {
-        User user = this.userRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = this.userRepository.findByEmail(body.email()).orElseThrow(UserNotFoundException::new);
 
         if(passwordEncoder.matches(body.password(), user.getPasswordHash())) {
             String token = this.tokenService.generateToken(user);
@@ -44,19 +45,18 @@ public class AuthController {
     public ResponseEntity register(@RequestBody RegisterRequestDTO body) {
         Optional<User> user = this.userRepository.findByEmail(body.email());
 
-        if(user.isEmpty()) {
-            User newUser = new User();
-            newUser.setEmail(body.email());
-            newUser.setPasswordHash(this.passwordEncoder.encode(body.password()));
-            newUser.setName(body.name());
-            newUser.setCreatedAt(new Date());
-
-            this.userRepository.save(newUser);
-
-            String token = this.tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new ResponseDTO(newUser.getName(), token));
+        if(user.isPresent()) {
+            return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.badRequest().build();
+        User newUser = new User();
+        newUser.setEmail(body.email());
+        newUser.setPasswordHash(this.passwordEncoder.encode(body.password()));
+        newUser.setName(body.name());
+
+        this.userRepository.save(newUser);
+
+        String token = this.tokenService.generateToken(newUser);
+        return ResponseEntity.ok(new ResponseDTO(newUser.getName(), token));
     }
 }

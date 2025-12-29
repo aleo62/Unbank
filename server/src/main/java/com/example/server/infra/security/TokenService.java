@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.example.server.infra.security.dto.ValidateTokenDTO;
 import com.example.server.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("unbank-api")
                     .withSubject(user.getEmail())
+                    .withClaim("version", user.getTokenVersion())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
 
@@ -32,15 +34,19 @@ public class TokenService {
         }
     }
 
-    public String validateToken(String token) {
+    public ValidateTokenDTO validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            return JWT.require(algorithm)
+            var decodedJWT = JWT.require(algorithm)
                     .withIssuer("unbank-api")
                     .build()
-                    .verify(token)
-                    .getSubject();
+                    .verify(token);
+
+            String email = decodedJWT.getSubject();
+            Integer version = decodedJWT.getClaim("version").asInt();
+
+            return new ValidateTokenDTO(email, version);
         } catch (JWTVerificationException e) {
             return null;
         }
