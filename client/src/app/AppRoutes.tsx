@@ -1,7 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router";
-import { Home } from "../pages/Home";
-import { Register } from "@/pages/Register";
-import { Login } from "@/pages/Login";
+import { Home } from "../features/home/Home";
+import { Register } from "@/features/auth/Register";
+import { Login } from "@/features/auth/Login";
 
 export const AppRoutes = () => {
     return (
