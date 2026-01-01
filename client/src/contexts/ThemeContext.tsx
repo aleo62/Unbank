@@ -24,9 +24,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         else localStorage.theme = "dark";
     };
 
+    const darkMode = verifyDarkMode();
+
     return (
         <ThemeContext.Provider
-            value={{ toggleTheme, darkMode: verifyDarkMode() }}
+            value={{ toggleTheme, darkMode }}
         >
             {children}
         </ThemeContext.Provider>

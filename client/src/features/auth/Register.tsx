@@ -1,17 +1,23 @@
+import { Trans, useTranslation } from "react-i18next";
 import { AuthTemplate } from ".";
 import { RegisterForm } from "./RegisterForm";
 
 export const Register = () => {
+    const { t } = useTranslation();
+
     return (
         <AuthTemplate
             title={
-                <>
-                    It's an {" "}
-                    <span className="font-medium text-amber-500">Honor</span> to
-                    have you here!
-                </>
+                <Trans
+                    i18nKey="register.title"
+                    components={{
+                        highlight: (
+                            <span className="font-medium text-amber-500" />
+                        ),
+                    }}
+                />
             }
-            subtitle="Create an account to get started, we are excited to have you onboard."
+            subtitle={t("register.subtitle")}
         >
             <RegisterForm />
         </AuthTemplate>

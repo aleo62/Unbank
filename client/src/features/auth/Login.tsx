@@ -1,11 +1,23 @@
+import { Trans, useTranslation } from "react-i18next";
 import { AuthTemplate } from ".";
 import { LoginForm } from "./LoginForm";
 
 export const Login = () => {
+    const { t } = useTranslation();
+
     return (
         <AuthTemplate
-            title={<><span className="font-medium text-amber-500">Welcome</span> back</>}
-            subtitle="Please sign in to your account, and continue managing your finances. (Just kidding, it's fake :p)"
+            title={
+                <Trans
+                    i18nKey="login.title"
+                    components={{
+                        highlight: (
+                            <span className="font-medium text-amber-500" />
+                        ),
+                    }}
+                />
+            }
+            subtitle={t("login.subtitle")}
         >
             <LoginForm />
         </AuthTemplate>

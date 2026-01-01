@@ -1,0 +1,10 @@
+{
+    "login": {
+        "title": "<highlight>Welcome</highlight> back",
+        "subtitle": "Please sign in to your account, and continue managing your finances. (Just kidding, it's fake :p)"
+    },
+    "register": {
+        "title": "<highlight>Join</highlight> us today",
+        "subtitle": "Create an account to get started, we are excited to have you onboard."
+    }
+}

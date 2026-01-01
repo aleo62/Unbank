@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
     Form,
     FormControl,
@@ -82,7 +81,6 @@ export const RegisterForm = () => {
                             </FormItem>
                         )}
                     />
-                   
                 </div>
 
                 <div className="flex items-center justify-between w-full">
