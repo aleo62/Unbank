@@ -8,6 +8,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRegister } from "@/hooks/auth/useRegister";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
@@ -15,6 +16,8 @@ import type z from "zod";
 import { registerFormScheme } from "./auth.schema";
 
 export const RegisterForm = () => {
+    const { mutate: register, isPending, error } = useRegister();
+
     const form = useForm<z.infer<typeof registerFormScheme>>({
         resolver: zodResolver(registerFormScheme),
         defaultValues: {
@@ -25,7 +28,7 @@ export const RegisterForm = () => {
     });
 
     function onSubmit(values: z.infer<typeof registerFormScheme>) {
-        console.log(values);
+        register(values);
     }
 
     return (
@@ -34,6 +37,12 @@ export const RegisterForm = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-12 pt-8"
             >
+                {error && (
+                    <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+                        Registration failed. Please try again.
+                    </div>
+                )}
+
                 <div className="space-y-6">
                     <FormField
                         control={form.control}
@@ -85,7 +94,7 @@ export const RegisterForm = () => {
 
                 <div className="flex items-center justify-between w-full">
                     <Link
-                        to={"/login"}
+                        to={"/auth/login"}
                         className="text-sm font-medium text-foreground"
                     >
                         Sign in
@@ -94,8 +103,9 @@ export const RegisterForm = () => {
                         className="w-full max-w-1/3 "
                         size={"lg"}
                         type="submit"
+                        disabled={isPending}
                     >
-                        Submit
+                        {isPending ? "Loading..." : "Submit"}
                     </Button>
                 </div>
             </form>

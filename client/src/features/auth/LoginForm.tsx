@@ -9,6 +9,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useLogin } from "@/hooks/auth/useLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
@@ -16,6 +17,8 @@ import type z from "zod";
 import { loginFormScheme } from "./auth.schema";
 
 export const LoginForm = () => {
+    const { mutate: login, isPending, error } = useLogin();
+
     const form = useForm<z.infer<typeof loginFormScheme>>({
         resolver: zodResolver(loginFormScheme),
         defaultValues: {
@@ -25,7 +28,7 @@ export const LoginForm = () => {
     });
 
     function onSubmit(values: z.infer<typeof loginFormScheme>) {
-        console.log(values);
+        login(values);
     }
 
     return (
@@ -34,6 +37,12 @@ export const LoginForm = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-12 pt-8"
             >
+                {error && (
+                    <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+                        Login failed. Please check your credentials.
+                    </div>
+                )}
+
                 <div className="space-y-6">
                     <FormField
                         control={form.control}
@@ -85,7 +94,7 @@ export const LoginForm = () => {
 
                 <div className="flex items-center justify-between w-full">
                     <Link
-                        to={"/register"}
+                        to={"/auth/register"}
                         className="text-sm font-medium text-foreground"
                     >
                         Sign up
@@ -94,8 +103,9 @@ export const LoginForm = () => {
                         className="w-full max-w-1/3 "
                         size={"lg"}
                         type="submit"
+                        disabled={isPending}
                     >
-                        Submit
+                        {isPending ? "Loading..." : "Submit"}
                     </Button>
                 </div>
             </form>
