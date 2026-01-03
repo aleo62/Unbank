@@ -43,7 +43,7 @@ export interface Transaction {
     id: string;
     amount: number;
     type: TransactionType;
-    timestamp: string;
+    createdAt: string;
     fromUser?: User;
     toUser?: User;
 }

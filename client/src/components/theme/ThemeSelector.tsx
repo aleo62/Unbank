@@ -3,7 +3,7 @@ import {
     DropdownMenu,
     DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { IconChevronDown, IconMoon, IconSun } from "@tabler/icons-react";
+import { ChevronDown, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { ThemeDropMenu } from "./ThemeDropMenu";
 
@@ -20,14 +20,14 @@ export const ThemeSelector = () => {
                 <div className="cursor-pointer flex items-center gap-1 text-muted-foreground">
                     {darkMode ? (
                         <>
-                            <IconMoon /> Dark
+                            <Moon /> Dark
                         </>
                     ) : (
                         <>
-                            <IconSun /> Light
+                            <Sun /> Light
                         </>
                     )}
-                    <IconChevronDown className="size-4 ml-3" />
+                    <ChevronDown className="size-4 ml-3" />
                 </div>
             </DropdownMenuTrigger>
             <ThemeDropMenu />

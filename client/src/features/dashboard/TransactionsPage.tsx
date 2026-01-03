@@ -8,12 +8,14 @@ import {
 } from "@/components/ui/table";
 import { useGetTransactions } from "@/hooks/transactions/useGetTransactions";
 import { useGetMe } from "@/hooks/user/useGetMe";
-import { format } from "date-fns";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import { format } from "date-fns";
 
 export const TransactionsPage = () => {
     const { data: user } = useGetMe();
-    const { data: transactions, isLoading } = useGetTransactions(user?.id || "");
+    const { data: transactions, isLoading } = useGetTransactions(
+        user?.id || ""
+    );
 
     if (isLoading) {
         return <div className="p-8">Carregando transações...</div>;
@@ -33,7 +35,7 @@ export const TransactionsPage = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {!transactions || transactions.length === 0 ? (
+                        {!transactions || transactions.length === 0 ? ( 
                             <TableRow>
                                 <TableCell
                                     colSpan={4}
@@ -42,7 +44,8 @@ export const TransactionsPage = () => {
                                     Nenhuma transação encontrada.
                                 </TableCell>
                             </TableRow>
-                        ) : (
+                        )
+                        : (
                             transactions.map((transaction) => {
                                 const isDeposit =
                                     transaction.type === "DEPOSIT" ||
@@ -69,7 +72,7 @@ export const TransactionsPage = () => {
                                         </TableCell>
                                         <TableCell>
                                             {format(
-                                                new Date(transaction.timestamp),
+                                                new Date(transaction.createdAt),
                                                 "dd/MM/yyyy HH:mm"
                                             )}
                                         </TableCell>

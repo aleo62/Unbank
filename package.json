@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "start-all": "concurrently --names server,client \"cd server && mvn spring-boot:run\"  \"cd client && npm run dev\""
+    },
+    "dependencies": {
+        "concurrently": "^9.2.1"
+    }
+}

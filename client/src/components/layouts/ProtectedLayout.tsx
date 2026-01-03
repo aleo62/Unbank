@@ -1,5 +1,6 @@
 import { useGetMe } from "@/hooks/user/useGetMe";
 import { Navigate, Outlet } from "react-router";
+import { SidebarProvider } from "../ui/sidebar";
 
 export const ProtectedLayout = () => {
     const { data: user, isLoading, isError } = useGetMe();
@@ -17,8 +18,10 @@ export const ProtectedLayout = () => {
     }
 
     return (
-        <main className="w-full h-full">
-            <Outlet />
-        </main>
+        <SidebarProvider>
+            <main className="w-full h-full">
+                <Outlet />
+            </main>
+        </SidebarProvider>
     );
 };
