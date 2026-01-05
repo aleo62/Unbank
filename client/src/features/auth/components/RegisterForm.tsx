@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
     Form,
     FormControl,
@@ -9,26 +8,27 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useLogin } from "@/hooks/auth/useLogin";
+import { useRegister } from "@/hooks/auth/useRegister";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import type z from "zod";
-import { loginFormScheme } from "./auth.schema";
+import { registerFormScheme } from "../auth.schema";
 
-export const LoginForm = () => {
-    const { mutate: login, isPending, error } = useLogin();
+export const RegisterForm = () => {
+    const { mutate: register, isPending, error } = useRegister();
 
-    const form = useForm<z.infer<typeof loginFormScheme>>({
-        resolver: zodResolver(loginFormScheme),
+    const form = useForm<z.infer<typeof registerFormScheme>>({
+        resolver: zodResolver(registerFormScheme),
         defaultValues: {
+            name: "",
             email: "",
             password: "",
         },
     });
 
-    function onSubmit(values: z.infer<typeof loginFormScheme>) {
-        login(values);
+    function onSubmit(values: z.infer<typeof registerFormScheme>) {
+        register(values);
     }
 
     return (
@@ -39,11 +39,25 @@ export const LoginForm = () => {
             >
                 {error && (
                     <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
-                        Login failed. Please check your credentials.
+                        Registration failed. Please try again.
                     </div>
                 )}
 
                 <div className="space-y-6">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="name" {...field} />
+                                </FormControl>
+
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <FormField
                         control={form.control}
                         name="email"
@@ -76,28 +90,14 @@ export const LoginForm = () => {
                             </FormItem>
                         )}
                     />
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                            <Checkbox></Checkbox>
-                            <label
-                                htmlFor="remember-me"
-                                className="text-sm text-muted-foreground"
-                            >
-                                Remember me
-                            </label>
-                        </div>
-                        <a href="#" className="text-sm font-medium">
-                            Forgot password?
-                        </a>
-                    </div>
                 </div>
 
                 <div className="flex items-center justify-between w-full">
                     <Link
-                        to={"/auth/register"}
+                        to={"/auth/login"}
                         className="text-sm font-medium text-foreground"
                     >
-                        Sign up
+                        Sign in
                     </Link>
                     <Button
                         className="w-full max-w-1/3 "

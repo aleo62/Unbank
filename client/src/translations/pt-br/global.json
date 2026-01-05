@@ -1,10 +1,10 @@
 {
     "login": {
-        "title": "Que <highlight>bom</highlight> ter ver de volta",
+        "title": "Que <highlight>bom</highlight> ter ver de volta conosco",
         "subtitle": "Por favor, faça login na sua conta e continue gerenciando suas finanças. (Só brincando, é falso :p)"
     },
     "register": {
         "title": "<highlight>Inscreva-se</highlight> hoje",
-        "subtitle": "Crie uma conta para começar, estamos animados para tê-lo a bordo."
+        "subtitle": "Crie uma conta para começar em nosso banco, estamos animados para tê-lo a bordo."
     }
 }

@@ -1,6 +1,6 @@
 import { Trans, useTranslation } from "react-i18next";
 import { AuthTemplate } from ".";
-import { LoginForm } from "./LoginForm";
+import { LoginForm } from "./components/LoginForm";
 
 export const Login = () => {
     const { t } = useTranslation();

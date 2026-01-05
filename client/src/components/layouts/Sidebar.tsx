@@ -11,10 +11,12 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useGetMe } from "@/hooks/user/useGetMe";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState } from "react";
 import { Link } from "react-router";
+import logo from "/logo/logo.png";
 
 const items = [
     {
@@ -35,36 +37,40 @@ const items = [
 ];
 
 export function Sidebar() {
-    const { data: user } = useGetMe();
+    useGetMe();
+    const isMobile = useIsMobile();
     const [selected, setSelected] = useState<string>("Início");
 
     return (
-        <AppSidebar className="absolute p-5! h-full border-r">
-            <SidebarHeader className=" text-xl font-medium flex items-center flex-row text-shadow-sm">
-                <span className="bg-amber-500/20 p-2  text-amber-500 rounded-lg inset-ring inset-ring-amber-500/20 backdrop-blur-sm ">
-                    un
-                </span>
-                bank.
+        <AppSidebar
+            collapsible={isMobile ? "offcanvas" : "none"}
+            className="h-full p-3! py-8! border-r w-fit! bg-sidebar!"
+        >
+            <SidebarHeader className=" text-xl font-medium flex items-center flex-row text-shadow-sm p-0! justify-center">
+                <img
+                    src={logo}
+                    alt="un"
+                    className="w-12.5 drop-shadow-xl drop-shadow-amber-700/20"
+                />
             </SidebarHeader>
 
-            <SidebarContent className="mt-4!">
-                <SidebarGroup>
+            <SidebarContent className="items-center pt-8">
+                <SidebarGroup className="p-0! w-fit!">
                     <SidebarGroupContent className="">
-                        <SidebarMenu className="space-y-3!">
+                        <SidebarMenu className="space-y-2!">
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton
                                         onClick={() => setSelected(item.title)}
-                                        className={`text-lg h-fit! px-3! gap-3! ${
+                                        className={`text-md h-fit! p-2! rounded-lg!  ${
                                             selected === item.title
-                                                ? "bg-foreground/90 text-background "
+                                                ? "bg-linear-to-t from-foreground/90 to-foreground/70 hover:text-background! text-background shadow-xl"
                                                 : "hover:bg-foreground/5 text-muted-foreground"
                                         }`}
                                         asChild
                                     >
                                         <Link to={item.url}>
                                             <item.icon className="size-5.5! " />
-                                            <span>{item.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -74,21 +80,15 @@ export function Sidebar() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter className="flex flex-row items-center p-2 hover:bg-foreground/5">
-                <Avatar>
+            <SidebarFooter className="flex items-center! relative w-full p-0!">
+                <Avatar className="items-center! w-full">
                     <AvatarImage
-                        className="w-10 rounded-lg"
+                        className="w-10 rounded-full items-center!  absolute! bottom-0 left-1/2 -translate-x-1/2 shadow-xl"
                         src="https://github.com/shadcn.png"
                         alt="@shadcn"
                     />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <div>
-                    <h3>{user?.name}</h3>
-                    <p className="text-xs text-muted-foreground">
-                        {user?.email}
-                    </p>
-                </div>
             </SidebarFooter>
         </AppSidebar>
     );

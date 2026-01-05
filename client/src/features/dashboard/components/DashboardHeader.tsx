@@ -1,5 +1,5 @@
 import { ThemeSelector } from "@/components/theme/ThemeSelector";
-import { DashboardBreadcrump } from "./DashboardBreadcrump";
+import { DashboardBreadcrump } from "../DashboardBreadcrump";
 
 export const DashboardHeader = () => {
     return (
