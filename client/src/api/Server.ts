@@ -85,7 +85,7 @@ export interface AuthResponseDTO {
 export const loginPath = "/auth/login";
 
 const api: AxiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
